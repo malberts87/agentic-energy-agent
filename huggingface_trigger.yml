@@ -1,0 +1,16 @@
+name: Run Hugging Face Agent Hourly
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:
+
+jobs:
+  call_agent:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Call Hugging Face Space
+      run: |
+        curl -X POST https://huggingface.co/spaces/malberts87/agentic-energy-agent /api/predict/ \
+          -H "Content-Type: application/json" \
+          -d '{"data": []}'
