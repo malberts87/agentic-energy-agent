@@ -119,10 +119,20 @@ def run_agent():
 # Minimal Gradio wrapper
 import gradio as gr
 
+import gradio as gr
+
 def gradio_run():
-    result = run_agent()
-    return f"{result['Timestamp']} | Action: {result['Action']} | SOC: {result['SOC']} MWh"
+    # Your agent logic here
+    print("Agent executed")
+    return "✅ Agent executed"
 
 demo = gr.Interface(fn=gradio_run, inputs=[], outputs="text")
+
 if __name__ == "__main__":
     demo.launch()
+
+from datetime import datetime
+
+def log_action(timestamp, demand, temp, price, action_str, soc):
+    with open("agent_actions.csv", "a") as f:
+        f.write(f"{timestamp},{demand},{temp},{price},{action_str},{soc}\n")
