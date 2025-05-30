@@ -2,3 +2,4 @@ torch
 requests
 pandas
 matplotlib
+gradio
