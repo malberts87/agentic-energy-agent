@@ -136,3 +136,22 @@ from datetime import datetime
 def log_action(timestamp, demand, temp, price, action_str, soc):
     with open("agent_actions.csv", "a") as f:
         f.write(f"{timestamp},{demand},{temp},{price},{action_str},{soc}\n")
+
+def explain_outage_risk(score, weather_data, demand_forecast):
+    reasons = []
+
+    if weather_data.get("storm") and weather_data["storm"]["severity"] >= 7:
+        reasons.append(f"Severe storm expected: {weather_data['storm']['description']}")
+
+    if abs(weather_data["temp"] - weather_data["temp_avg"]) > 10:
+        reasons.append("Temperature anomaly exceeding 10°C")
+
+    if demand_forecast["peak_hours"] and demand_forecast["forecast_demand"] > 0.9:
+        reasons.append("High grid demand forecasted during peak hours")
+
+    if score == 0.0:
+        return "No elevated outage risk detected."
+    elif reasons:
+        return " • ".join(reasons)
+    else:
+        return "Elevated risk, but no single dominant factor identified."
